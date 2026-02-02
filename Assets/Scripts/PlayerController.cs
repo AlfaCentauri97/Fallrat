@@ -18,9 +18,13 @@ public sealed class PlayerController : MonoBehaviour
     [SerializeField] float turnSmoothing = 14f;
     [SerializeField] float rollAmount = 18f;
 
+    [Header("Animation")]
+    [SerializeField] Animator animator;
+
     Rigidbody rb;
     Vector2 input;
     float currentRoll;
+    bool isDead;
 
     void Awake()
     {
@@ -30,10 +34,15 @@ public sealed class PlayerController : MonoBehaviour
                          RigidbodyConstraints.FreezeRotationX |
                          RigidbodyConstraints.FreezeRotationY;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+
+        if (!animator)
+            animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
+        if (isDead) return;
+
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         input = Vector2.ClampMagnitude(input, 1f);
 
@@ -44,6 +53,8 @@ public sealed class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isDead) return;
+
         Vector3 v3 = rb.linearVelocity;
 
         float targetVX = input.x * maxSpeedX;
@@ -87,5 +98,23 @@ public sealed class PlayerController : MonoBehaviour
         if (current < target) return Mathf.Min(current + maxDelta, target);
         if (current > target) return Mathf.Max(current - maxDelta, target);
         return current;
+    }
+    public void PlayDeath()
+    {
+        if (animator)
+            animator.Play("DeathPlayer", 0, 0f);
+    }
+    // COLLISION
+    void OnTriggerEnter(Collider other)
+    {
+        if (isDead) return;
+        if (other.CompareTag("Occluder"))
+        {
+            isDead = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true;
+
+            GameManager.Instance.PlayerDied(this);
+        }
     }
 }

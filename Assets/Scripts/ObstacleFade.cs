@@ -8,11 +8,9 @@ public sealed class ObstacleFade : MonoBehaviour, IPoolable
 
     Renderer[] renderers;
     MaterialPropertyBlock mpb;
-
-    // URP:
-    static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");   // URP Lit/Unlit
-    // Built-in / legacy fallback:
-    static readonly int ColorId     = Shader.PropertyToID("_Color");       // Standard shader / custom
+    
+    static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+    static readonly int ColorId     = Shader.PropertyToID("_Color");
 
     float current = 1f;
     float target = 1f;
@@ -43,8 +41,7 @@ public sealed class ObstacleFade : MonoBehaviour, IPoolable
         {
             var r = renderers[i];
             if (!r) continue;
-
-            // ważne: czyścimy per-renderer, żeby nie przenosić wartości między rendererami
+            
             mpb.Clear();
             r.GetPropertyBlock(mpb);
 
@@ -54,17 +51,13 @@ public sealed class ObstacleFade : MonoBehaviour, IPoolable
                 r.SetPropertyBlock(mpb);
                 continue;
             }
-
-            // URP: _BaseColor
+            
             if (mat.HasProperty(BaseColorId))
             {
-                // UWAGA: GetColor z mat czyta z materiału, nie z MPB,
-                // ale do fade zwykle wystarcza (kolor bazowy ma być stały).
                 var c = mat.GetColor(BaseColorId);
                 c.a = a;
                 mpb.SetColor(BaseColorId, c);
             }
-            // Fallback: _Color
             else if (mat.HasProperty(ColorId))
             {
                 var c = mat.GetColor(ColorId);

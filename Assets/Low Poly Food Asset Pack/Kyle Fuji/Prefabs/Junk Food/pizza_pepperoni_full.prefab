@@ -1,0 +1,411 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1497571358498561720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5794963338412376006}
+  m_Layer: 0
+  m_Name: pizza_pepperoni_full
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5794963338412376006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497571358498561720}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1774872501190174470}
+  - {fileID: 5120222085128884897}
+  - {fileID: 7728576455447587960}
+  - {fileID: 5802497963503572699}
+  - {fileID: 26786273828288817}
+  - {fileID: 4631341443963851659}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2551568802465595185
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5794963338412376006}
+    m_Modifications:
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.49999666
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8660274
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 240
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917214472789187770, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_Name
+      value: pizza_pepperoni (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+--- !u!4 &26786273828288817 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+  m_PrefabInstance: {fileID: 2551568802465595185}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4293701299117400326
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5794963338412376006}
+    m_Modifications:
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917214472789187770, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_Name
+      value: pizza_pepperoni
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+--- !u!4 &1774872501190174470 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+  m_PrefabInstance: {fileID: 4293701299117400326}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5221568494095346296
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5794963338412376006}
+    m_Modifications:
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5000018
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.86602443
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917214472789187770, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_Name
+      value: pizza_pepperoni (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+--- !u!4 &7728576455447587960 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+  m_PrefabInstance: {fileID: 5221568494095346296}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7165793490172417419
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5794963338412376006}
+    m_Modifications:
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.8660254
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917214472789187770, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_Name
+      value: pizza_pepperoni (5)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+--- !u!4 &4631341443963851659 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+  m_PrefabInstance: {fileID: 7165793490172417419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7221936983331673249
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5794963338412376006}
+    m_Modifications:
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8660259
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.49999917
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917214472789187770, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_Name
+      value: pizza_pepperoni (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+--- !u!4 &5120222085128884897 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+  m_PrefabInstance: {fileID: 7221936983331673249}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8336526369152618715
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5794963338412376006}
+    m_Modifications:
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000029504295
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2917214472789187770, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+      propertyPath: m_Name
+      value: pizza_pepperoni (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+--- !u!4 &5802497963503572699 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2537734100228900352, guid: 97ba503419bc3374a9ee288c5e8ab7c3, type: 3}
+  m_PrefabInstance: {fileID: 8336526369152618715}
+  m_PrefabAsset: {fileID: 0}

@@ -31,6 +31,7 @@ public sealed class Gate : MonoBehaviour, IPoolable
 
     void OnTriggerEnter(Collider other)
     {
+        UIManager.Instance.AddScore();
         Debug.Log("gate hit");
     }
 }
