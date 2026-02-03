@@ -939,10 +939,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 8b341569-1415-4ac4-840a-46cad78b234d
+  cloudProjectId: b2d84f8a-a419-40df-8758-fbd339176f06
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: RandomGame
+  projectName: RandomGame (1)
   organizationId: retrocrab-as-publisher
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

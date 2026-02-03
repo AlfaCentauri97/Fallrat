@@ -1,38 +1,40 @@
-using Project.Core;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
+using Project.Core;
+
 public sealed class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    [SerializeField] Transform endGamePoint;
     [SerializeField] float endGameUIDelay = 2f;
-
     Coroutine endGameRoutine;
-
-    public void PlayerDied(PlayerController player)
+    public Transform endGamePoint;
+    public void ServerMoveToEndPoint(NetworkPlayerController player)
     {
-        if (!endGamePoint) return;
+        if (!NetworkManager.Singleton || !NetworkManager.Singleton.IsServer) return;
+        if (!endGamePoint || !player) return;
 
-        player.transform.position = endGamePoint.position;
-        player.transform.rotation = endGamePoint.rotation;
+        player.ServerTeleportTo(endGamePoint.position, endGamePoint.rotation);
+    }
 
-        CameraMgr.Instance.SetEndCamera();
-        player.PlayDeath();
-
-        if (endGameRoutine != null)
-            StopCoroutine(endGameRoutine);
-
+    public void LocalPlayerDied()
+    {
+        if (endGameRoutine != null) StopCoroutine(endGameRoutine);
         endGameRoutine = StartCoroutine(EndGameSequence());
     }
+
 
     IEnumerator EndGameSequence()
     {
         yield return new WaitForSeconds(endGameUIDelay);
-        UIManager.Instance.ShowEndGameUI(true);
+        if (UIManager.Instance) UIManager.Instance.ShowEndGameUI(true);
     }
-    
-    public void ReloadScene()
+
+    public void ReturnToLobby()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (NetworkManager.Singleton)
+            NetworkManager.Singleton.Shutdown();
+
+        SceneManager.LoadScene("LobbyScene");
     }
 }

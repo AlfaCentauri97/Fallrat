@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public sealed class PlayerController : MonoBehaviour
+public sealed class NetworkPlayerController : NetworkBehaviour
 {
     [Header("Move Base")]
     [SerializeField] float maxSpeedX = 7f;
@@ -28,11 +29,18 @@ public sealed class PlayerController : MonoBehaviour
 
     [Header("Animation")]
     [SerializeField] Animator animator;
+    [SerializeField] string deathState = "DeathPlayer";
+    [SerializeField] string jumpState = "JumpPlayer";
 
     Rigidbody rb;
-    Vector2 input;
+
+    Vector2 inputOwner;
+    Vector2 inputServer;
+
     float currentRoll;
+
     bool isDead;
+    bool deathRequested;
 
     float elapsed;
     float curMaxSpeedX, curMaxSpeedY;
@@ -41,14 +49,16 @@ public sealed class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
-        rb.constraints = RigidbodyConstraints.FreezePositionZ |
-                         RigidbodyConstraints.FreezeRotationX |
-                         RigidbodyConstraints.FreezeRotationY;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        if (rb)
+        {
+            rb.useGravity = false;
+            rb.constraints = RigidbodyConstraints.FreezePositionZ |
+                             RigidbodyConstraints.FreezeRotationX |
+                             RigidbodyConstraints.FreezeRotationY;
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
+        }
 
-        if (!animator)
-            animator = GetComponentInChildren<Animator>();
+        if (!animator) animator = GetComponentInChildren<Animator>();
 
         if (ramp == null || ramp.length == 0)
             ramp = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
@@ -63,20 +73,30 @@ public sealed class PlayerController : MonoBehaviour
     {
         if (isDead) return;
 
-        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        input = Vector2.ClampMagnitude(input, 1f);
+        if (IsOwner)
+        {
+            inputOwner = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            inputOwner = Vector2.ClampMagnitude(inputOwner, 1f);
 
-        float targetRoll = -input.x * rollAmount;
-        currentRoll = Mathf.Lerp(currentRoll, targetRoll, 1f - Mathf.Exp(-turnSmoothing * Time.deltaTime));
-        transform.localRotation = Quaternion.Euler(0f, 0f, currentRoll);
+            SubmitInputServerRpc(inputOwner);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            PlayJump();
+            float targetRoll = -inputOwner.x * rollAmount;
+            currentRoll = Mathf.Lerp(currentRoll, targetRoll, 1f - Mathf.Exp(-turnSmoothing * Time.deltaTime));
+            transform.localRotation = Quaternion.Euler(0f, 0f, currentRoll);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                JumpServerRpc();
+        }
+        else
+        {
+            transform.localRotation = Quaternion.identity;
+        }
     }
 
     void FixedUpdate()
     {
-        if (isDead) return;
+        if (!IsServer || isDead) return;
+        if (!rb) return;
 
         elapsed += Time.fixedDeltaTime;
 
@@ -90,8 +110,8 @@ public sealed class PlayerController : MonoBehaviour
 
         Vector3 v3 = rb.linearVelocity;
 
-        float targetVX = input.x * curMaxSpeedX;
-        float targetVY = input.y * curMaxSpeedY;
+        float targetVX = inputServer.x * curMaxSpeedX;
+        float targetVY = inputServer.y * curMaxSpeedY;
 
         v3.x = MoveTowards(v3.x, targetVX, curAccelX * Time.fixedDeltaTime);
         v3.y = MoveTowards(v3.y, targetVY, curAccelY * Time.fixedDeltaTime);
@@ -119,10 +139,95 @@ public sealed class PlayerController : MonoBehaviour
             float radial = Vector2.Dot(velXY, normal);
             if (radial > 0f) velXY -= radial * normal;
 
-            float inwardInput = Mathf.Clamp01(-Vector2.Dot(input, normal));
+            float inwardInput = Mathf.Clamp01(-Vector2.Dot(inputServer, normal));
             if (inwardInput > 0f) velXY += (-normal) * (edgeExitBoost * inwardInput);
 
             rb.linearVelocity = new Vector3(velXY.x, velXY.y, vel.z);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (!IsOwner || isDead) return;
+        if (other.CompareTag("Occluder"))
+            RequestDeath();
+    }
+
+    void RequestDeath()
+    {
+        if (deathRequested) return;
+        deathRequested = true;
+        DieServerRpc();
+    }
+
+    [ServerRpc]
+    void DieServerRpc()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        inputServer = Vector2.zero;
+
+        if (rb)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+
+        var targets = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new[] { OwnerClientId }
+            }
+        };
+        PlayLocalDeathClientRpc(targets);
+
+        if (GameManager.Instance)
+            GameManager.Instance.ServerMoveToEndPoint(this);
+    }
+
+    [ClientRpc]
+    void PlayLocalDeathClientRpc(ClientRpcParams rpcParams = default)
+    {
+        if (!IsOwner) return;
+
+        if (CameraMgr.Instance)
+            CameraMgr.Instance.SetEndCamera();
+
+        if (animator)
+            animator.Play(deathState, 0, 0f);
+
+        if (GameManager.Instance)
+            GameManager.Instance.LocalPlayerDied();
+    }
+
+    [ServerRpc]
+    void SubmitInputServerRpc(Vector2 input)
+    {
+        if (isDead) return;
+        inputServer = input;
+    }
+
+    [ServerRpc]
+    void JumpServerRpc()
+    {
+        if (isDead) return;
+        if (animator) animator.Play(jumpState, 0, 0f);
+    }
+
+    public void ServerTeleportTo(Vector3 pos, Quaternion rot)
+    {
+        if (!IsServer) return;
+
+        if (rb)
+        {
+            rb.position = pos;
+            rb.rotation = rot;
+        }
+        else
+        {
+            transform.SetPositionAndRotation(pos, rot);
         }
     }
 
@@ -131,32 +236,5 @@ public sealed class PlayerController : MonoBehaviour
         if (current < target) return Mathf.Min(current + maxDelta, target);
         if (current > target) return Mathf.Max(current - maxDelta, target);
         return current;
-    }
-
-    public void PlayDeath()
-    {
-        if (animator)
-            animator.Play("DeathPlayer", 0, 0f);
-    }
-
-    public void PlayJump()
-    {
-        if (!animator) return;
-        animator.Play("JumpPlayer", 0, 0f);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (isDead) return;
-
-        if (other.CompareTag("Occluder"))
-        {
-            isDead = true;
-
-            rb.linearVelocity = Vector3.zero;
-            rb.isKinematic = true;
-
-            GameManager.Instance.PlayerDied(this);
-        }
     }
 }
