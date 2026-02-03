@@ -6,19 +6,45 @@ public sealed class GateManager : MonoBehaviour
 {
     [SerializeField] PoolKey gateKey;
     [SerializeField] Transform spawnPoint;
+
+    [Header("Base")]
     [SerializeField] float spawnInterval = 1.2f;
     [SerializeField] float speed = 8f;
     [SerializeField] float despawnZ = -40f;
 
+    [Header("Scaling")]
+    [SerializeField] float intervalMin = 0.55f;
+    [SerializeField] float speedMax = 18f;
+    [SerializeField] float rampDuration = 90f;
+    [SerializeField] AnimationCurve ramp = null;
+
     readonly List<GameObject> active = new();
     float timer;
+    float elapsed;
+
+    float BaseInterval => spawnInterval;
+    float BaseSpeed => speed;
+
+    void Awake()
+    {
+        if (ramp == null || ramp.length == 0)
+            ramp = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+    }
 
     void Update()
     {
+        elapsed += Time.deltaTime;
+
+        float t = rampDuration <= 0f ? 1f : Mathf.Clamp01(elapsed / rampDuration);
+        float k = Mathf.Clamp01(ramp.Evaluate(t));
+
+        float currentSpeed = Mathf.Lerp(BaseSpeed, speedMax, k);
+        float currentInterval = Mathf.Lerp(BaseInterval, intervalMin, k);
+
         timer += Time.deltaTime;
-        while (timer >= spawnInterval)
+        while (timer >= currentInterval)
         {
-            timer -= spawnInterval;
+            timer -= currentInterval;
             SpawnGate();
         }
 
@@ -28,7 +54,7 @@ public sealed class GateManager : MonoBehaviour
             if (!go) { active.RemoveAt(i); continue; }
 
             var p = go.transform.position;
-            p.z -= speed * Time.deltaTime;
+            p.z -= currentSpeed * Time.deltaTime;
             go.transform.position = p;
 
             if (p.z <= despawnZ)

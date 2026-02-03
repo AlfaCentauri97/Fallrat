@@ -2,11 +2,19 @@ using UnityEngine;
 
 public sealed class PlayerController : MonoBehaviour
 {
-    [Header("Move")]
+    [Header("Move Base")]
     [SerializeField] float maxSpeedX = 7f;
     [SerializeField] float maxSpeedY = 7f;
     [SerializeField] float accelX = 35f;
     [SerializeField] float accelY = 35f;
+
+    [Header("Move Scaling")]
+    [SerializeField] float maxSpeedXMax = 12f;
+    [SerializeField] float maxSpeedYMax = 12f;
+    [SerializeField] float accelXMax = 60f;
+    [SerializeField] float accelYMax = 60f;
+    [SerializeField] float rampDuration = 90f;
+    [SerializeField] AnimationCurve ramp;
 
     [Header("Bounds")]
     [SerializeField] Vector2 center = Vector2.zero;
@@ -26,6 +34,10 @@ public sealed class PlayerController : MonoBehaviour
     float currentRoll;
     bool isDead;
 
+    float elapsed;
+    float curMaxSpeedX, curMaxSpeedY;
+    float curAccelX, curAccelY;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -37,6 +49,14 @@ public sealed class PlayerController : MonoBehaviour
 
         if (!animator)
             animator = GetComponentInChildren<Animator>();
+
+        if (ramp == null || ramp.length == 0)
+            ramp = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+        curMaxSpeedX = maxSpeedX;
+        curMaxSpeedY = maxSpeedY;
+        curAccelX = accelX;
+        curAccelY = accelY;
     }
 
     void Update()
@@ -49,19 +69,32 @@ public sealed class PlayerController : MonoBehaviour
         float targetRoll = -input.x * rollAmount;
         currentRoll = Mathf.Lerp(currentRoll, targetRoll, 1f - Mathf.Exp(-turnSmoothing * Time.deltaTime));
         transform.localRotation = Quaternion.Euler(0f, 0f, currentRoll);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            PlayJump();
     }
 
     void FixedUpdate()
     {
         if (isDead) return;
 
+        elapsed += Time.fixedDeltaTime;
+
+        float t = rampDuration <= 0f ? 1f : Mathf.Clamp01(elapsed / rampDuration);
+        float k = Mathf.Clamp01(ramp.Evaluate(t));
+
+        curMaxSpeedX = Mathf.Lerp(maxSpeedX, maxSpeedXMax, k);
+        curMaxSpeedY = Mathf.Lerp(maxSpeedY, maxSpeedYMax, k);
+        curAccelX = Mathf.Lerp(accelX, accelXMax, k);
+        curAccelY = Mathf.Lerp(accelY, accelYMax, k);
+
         Vector3 v3 = rb.linearVelocity;
 
-        float targetVX = input.x * maxSpeedX;
-        float targetVY = input.y * maxSpeedY;
+        float targetVX = input.x * curMaxSpeedX;
+        float targetVY = input.y * curMaxSpeedY;
 
-        v3.x = MoveTowards(v3.x, targetVX, accelX * Time.fixedDeltaTime);
-        v3.y = MoveTowards(v3.y, targetVY, accelY * Time.fixedDeltaTime);
+        v3.x = MoveTowards(v3.x, targetVX, curAccelX * Time.fixedDeltaTime);
+        v3.y = MoveTowards(v3.y, targetVY, curAccelY * Time.fixedDeltaTime);
 
         rb.linearVelocity = v3;
 
@@ -99,18 +132,27 @@ public sealed class PlayerController : MonoBehaviour
         if (current > target) return Mathf.Max(current - maxDelta, target);
         return current;
     }
+
     public void PlayDeath()
     {
         if (animator)
             animator.Play("DeathPlayer", 0, 0f);
     }
-    // COLLISION
+
+    public void PlayJump()
+    {
+        if (!animator) return;
+        animator.Play("JumpPlayer", 0, 0f);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (isDead) return;
+
         if (other.CompareTag("Occluder"))
         {
             isDead = true;
+
             rb.linearVelocity = Vector3.zero;
             rb.isKinematic = true;
 
