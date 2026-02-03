@@ -409,7 +409,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -580,7 +580,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 67
+  field of view: 21.3
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -606,8 +606,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5.66}
+  m_LocalRotation: {x: 0.038646184, y: 0.7060499, z: -0.038646184, w: 0.7060499}
+  m_LocalPosition: {x: -0.31, y: 6.35, z: 9.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1602,6 +1602,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundAudio: {fileID: 256943420}
   hitEffectAudio: {fileID: 1579655204}
+  fadeDuration: 1
+  targetMusicVolume: 0.7
 --- !u!114 &1184615283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2512,8 +2514,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 0
   Mute: 0

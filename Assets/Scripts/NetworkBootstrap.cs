@@ -23,12 +23,16 @@ public sealed class NetworkBootstrap : MonoBehaviour
     [Header("NGO")]
     [SerializeField] NetworkManager networkManager;
     [SerializeField] UnityTransport transport;
-    
+
+    [Header("Scenes")]
+    [SerializeField] string lobbySceneName = "Lobby";
+    [SerializeField] string gameSceneName = "MainScene";
+
     [Header("Quick Play")]
     [SerializeField] int maxPlayers = 8;
     [SerializeField] float quickPlaySeconds = 30f;
 
-    [Header("UI")]
+    [Header("UI (bound from LobbySceneRefs)")]
     [SerializeField] TextMeshProUGUI statusText;
 
     [Header("Lobby Preview Rats")]
@@ -78,17 +82,42 @@ public sealed class NetworkBootstrap : MonoBehaviour
         if (!networkManager) networkManager = FindFirstObjectByType<NetworkManager>();
         if (networkManager && !transport) transport = networkManager.GetComponent<UnityTransport>();
 
-        slotInstances = new GameObject[lobbySlots != null ? lobbySlots.Length : 0];
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
-        ResetFade();
+        BindLobbySceneRefsIfPresent();
         ResetRuntimeFlags();
+        SetStatus("Ready.");
     }
 
-    void OnDisable()
+    void OnDestroy()
     {
-        StopAllFlows();
-        ClearLobbyPreview();
-        KillFadeTween();
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == lobbySceneName)
+        {
+            BindLobbySceneRefsIfPresent();
+            ResetFade();
+            ClearLobbyPreview();
+            ResetRuntimeFlags();
+            inFlow = false;
+            SetStatus("Ready.");
+        }
+    }
+
+    void BindLobbySceneRefsIfPresent()
+    {
+        var refs = FindFirstObjectByType<LobbySceneRefs>();
+        if (!refs) return;
+
+        statusText = refs.statusText;
+        fadeImage = refs.fadeImage;
+        lobbySlots = refs.lobbySlots;
+
+        slotInstances = new GameObject[lobbySlots != null ? lobbySlots.Length : 0];
+        ResetFade();
     }
 
     async void OnApplicationQuit()
@@ -99,9 +128,12 @@ public sealed class NetworkBootstrap : MonoBehaviour
     public async Task QuickPlayAsync()
     {
         if (inFlow) return;
-
-        ResetRuntimeFlags();
         inFlow = true;
+
+        ClearLobbyPreview();
+        ResetFade();
+        KillFadeTween();
+        ResetRuntimeFlags();
 
         try
         {
@@ -158,7 +190,7 @@ public sealed class NetworkBootstrap : MonoBehaviour
         ResetRuntimeFlags();
         inFlow = false;
 
-        SetStatus("Cancelled. Back to menu.");
+        SetStatus("Ready.");
     }
 
     async Task EnsureServicesAsync()
@@ -262,14 +294,12 @@ public sealed class NetworkBootstrap : MonoBehaviour
         transport.SetRelayServerData(serverData);
 
         networkManager.StartHost();
-
         SetStatus("Host: waiting for players...");
     }
 
     void StartClientFlow()
     {
         StopAllFlows();
-
         pollCo = StartCoroutine(ClientPollLobbyThenConnectAndPreview());
     }
 
@@ -385,12 +415,11 @@ public sealed class NetworkBootstrap : MonoBehaviour
 
             PlayLobbyStartOnAllRats();
             yield return new WaitForSeconds(lobbyStartAnimDelay);
-
             yield return FadeToBlack();
         }
 
         if (networkManager && networkManager.SceneManager != null)
-            networkManager.SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
+            networkManager.SceneManager.LoadScene(gameSceneName, LoadSceneMode.Single);
 
         var u2 = Lobbies.Instance.UpdateLobbyAsync(currentLobby.Id, new UpdateLobbyOptions
         {
@@ -409,7 +438,6 @@ public sealed class NetworkBootstrap : MonoBehaviour
 
         PlayLobbyStartOnAllRats();
         yield return new WaitForSeconds(lobbyStartAnimDelay);
-
         yield return FadeToBlack();
     }
 
@@ -417,6 +445,9 @@ public sealed class NetworkBootstrap : MonoBehaviour
     {
         if (!lobbyRatPrefab || lobbySlots == null || lobbySlots.Length == 0) return;
         if (lobby.Players == null) return;
+
+        if (slotInstances == null || slotInstances.Length != lobbySlots.Length)
+            slotInstances = new GameObject[lobbySlots.Length];
 
         int slotsCount = lobbySlots.Length;
         int count = Mathf.Min(slotsCount, lobby.Players.Count);
@@ -537,7 +568,7 @@ public sealed class NetworkBootstrap : MonoBehaviour
         {
             if (isHost)
                 await Lobbies.Instance.DeleteLobbyAsync(currentLobby.Id);
-            else
+            else if (AuthenticationService.Instance.IsSignedIn)
                 await Lobbies.Instance.RemovePlayerAsync(currentLobby.Id, AuthenticationService.Instance.PlayerId);
         }
         catch { }

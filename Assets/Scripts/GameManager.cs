@@ -32,9 +32,21 @@ public sealed class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void ReturnToLobby()
     {
-        if (NetworkManager.Singleton)
-            NetworkManager.Singleton.Shutdown();
+        StartCoroutine(ReturnToLobbyRoutine());
+    }
 
-        SceneManager.LoadScene("LobbyScene");
+    IEnumerator ReturnToLobbyRoutine()
+    {
+        if (NetworkBootstrap.Instance != null)
+        {
+            var t = NetworkBootstrap.Instance.CancelQuickPlayAsync();
+            while (!t.IsCompleted) yield return null;
+        }
+        else if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+
+        SceneManager.LoadScene("LobbyScene", LoadSceneMode.Single);
     }
 }

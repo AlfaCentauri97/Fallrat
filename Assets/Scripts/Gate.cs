@@ -32,6 +32,7 @@ public sealed class Gate : MonoBehaviour, IPoolable
     void OnTriggerEnter(Collider other)
     {
         UIManager.Instance.AddScore();
+        AudioManager.Instance.PlayHitEffect("Woosh");
         Debug.Log("gate hit");
     }
 }
