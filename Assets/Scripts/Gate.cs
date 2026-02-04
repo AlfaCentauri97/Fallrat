@@ -9,13 +9,34 @@ public sealed class Gate : MonoBehaviour, IPoolable
 
     int activeIndex = -1;
 
+    public int TrapCount => traps != null ? traps.Count : 0;
+
     public void OnSpawned()
     {
-        int count = traps != null ? traps.Count : 0;
+        activeIndex = -1;
+
+        if (forcedIndex >= 0)
+        {
+            SetTrapIndex(forcedIndex);
+        }
+        else
+        {
+            DisableAll();
+        }
+    }
+
+    public void OnDespawned()
+    {
+        activeIndex = -1;
+        DisableAll();
+    }
+
+    public void SetTrapIndex(int index)
+    {
+        int count = TrapCount;
         if (count <= 0) return;
 
-        int index = forcedIndex >= 0 ? Mathf.Clamp(forcedIndex, 0, count - 1) : Random.Range(0, count);
-
+        index = Mathf.Clamp(index, 0, count - 1);
         if (index == activeIndex) return;
 
         for (int i = 0; i < count; i++)
@@ -27,12 +48,20 @@ public sealed class Gate : MonoBehaviour, IPoolable
         activeIndex = index;
     }
 
-    public void OnDespawned() { }
+    void DisableAll()
+    {
+        int count = TrapCount;
+        for (int i = 0; i < count; i++)
+        {
+            var go = traps[i];
+            if (go) go.SetActive(false);
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
         UIManager.Instance.AddScore();
-        AudioManager.Instance.PlayHitEffect("Woosh");
+        AudioManager.Instance.PlayHitEffect("Woosh", 0.15f);
         Debug.Log("gate hit");
     }
 }

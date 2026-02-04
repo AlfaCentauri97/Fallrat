@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8028133050937818134}
   - component: {fileID: 6145524788122732928}
   - component: {fileID: 8385315900456969174}
+  - component: {fileID: 1126138214285019546}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -148,7 +149,8 @@ MonoBehaviour:
   turnSmoothing: 14
   rollAmount: 18
   animator: {fileID: 7825517409504149529}
-  despawnDelay: 2
+  jumpTriggerName: Jump
+  deathTriggerName: Death
 --- !u!95 &7825517409504149529
 Animator:
   serializedVersion: 7
@@ -189,7 +191,15 @@ MonoBehaviour:
   m_Animator: {fileID: 7825517409504149529}
   TransitionStateInfoList: []
   AnimatorParameterEntries:
-    ParameterEntries: []
+    ParameterEntries:
+    - name: Jump
+      NameHash: 125937960
+      Synchronize: 1
+      ParameterType: 9
+    - name: Death
+      NameHash: 646380074
+      Synchronize: 1
+      ParameterType: 9
   AnimatorParametersExpanded: 0
 --- !u!114 &6145524788122732928
 MonoBehaviour:
@@ -254,6 +264,23 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &1126138214285019546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4935814621687427988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbfbf3f6d02432148bbaed38d5e8c0ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  gameplaySceneName: MainScene
+  visualRoot: {fileID: 5706730993393412577}
+  enableOnlyInGameplay:
+  - {fileID: 4146848993852858389}
 --- !u!1 &5706730993393412577
 GameObject:
   m_ObjectHideFlags: 0

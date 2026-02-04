@@ -29,15 +29,16 @@ public sealed class NetworkPlayerController : NetworkBehaviour
 
     [Header("Animation")]
     [SerializeField] Animator animator;
-    [SerializeField] string deathState = "DeathPlayer";
-    [SerializeField] string jumpState = "JumpPlayer";
+    [SerializeField] string jumpTriggerName = "Jump";
+    [SerializeField] string deathTriggerName = "Death";
 
     Rigidbody rb;
 
     Vector2 inputOwner;
     Vector2 inputServer;
 
-    float currentRoll;
+    float currentRollOwner;  // tylko do “feel” na ownerze
+    float rollServer;        // autorytatywny roll na serwerze (replikowany przez NetworkTransform)
 
     bool isDead;
     bool deathRequested;
@@ -45,6 +46,9 @@ public sealed class NetworkPlayerController : NetworkBehaviour
     float elapsed;
     float curMaxSpeedX, curMaxSpeedY;
     float curAccelX, curAccelY;
+
+    int jumpTrig;
+    int deathTrig;
 
     void Awake()
     {
@@ -67,30 +71,42 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         curMaxSpeedY = maxSpeedY;
         curAccelX = accelX;
         curAccelY = accelY;
+
+        jumpTrig = Animator.StringToHash(jumpTriggerName);
+        deathTrig = Animator.StringToHash(deathTriggerName);
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+
+        if (IsOwner && CameraMgr.Instance)
+            CameraMgr.Instance.SetGameCamera();
     }
 
     void Update()
     {
         if (isDead) return;
 
-        if (IsOwner)
-        {
-            inputOwner = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            inputOwner = Vector2.ClampMagnitude(inputOwner, 1f);
+        if (!IsOwner) return;
 
-            SubmitInputServerRpc(inputOwner);
+        // input local
+        inputOwner = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        inputOwner = Vector2.ClampMagnitude(inputOwner, 1f);
 
-            float targetRoll = -inputOwner.x * rollAmount;
-            currentRoll = Mathf.Lerp(currentRoll, targetRoll, 1f - Mathf.Exp(-turnSmoothing * Time.deltaTime));
-            transform.localRotation = Quaternion.Euler(0f, 0f, currentRoll);
+        // roll local (responsywność)
+        float targetRoll = -inputOwner.x * rollAmount;
+        currentRollOwner = Mathf.Lerp(currentRollOwner, targetRoll, 1f - Mathf.Exp(-turnSmoothing * Time.deltaTime));
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                JumpServerRpc();
-        }
-        else
-        {
-            transform.localRotation = Quaternion.identity;
-        }
+        // opcjonalnie: owner może podglądać roll od razu
+        // (serwer i tak go zaraz nadpisze)
+        transform.localRotation = Quaternion.Euler(0f, 0f, currentRollOwner);
+
+        // wyślij input + roll do serwera
+        SubmitInputServerRpc(inputOwner, currentRollOwner);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            JumpServerRpc();
     }
 
     void FixedUpdate()
@@ -108,6 +124,7 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         curAccelX = Mathf.Lerp(accelX, accelXMax, k);
         curAccelY = Mathf.Lerp(accelY, accelYMax, k);
 
+        // ruch (server authoritative)
         Vector3 v3 = rb.linearVelocity;
 
         float targetVX = inputServer.x * curMaxSpeedX;
@@ -118,6 +135,7 @@ public sealed class NetworkPlayerController : NetworkBehaviour
 
         rb.linearVelocity = v3;
 
+        // bounds
         Vector3 p3 = rb.position;
         Vector2 p = new Vector2(p3.x, p3.y);
         Vector2 offset = p - center;
@@ -144,11 +162,15 @@ public sealed class NetworkPlayerController : NetworkBehaviour
 
             rb.linearVelocity = new Vector3(velXY.x, velXY.y, vel.z);
         }
+
+        // ✅ rotacja ustawiana na serwerze (NetworkTransform ją zreplikuje)
+        transform.localRotation = Quaternion.Euler(0f, 0f, rollServer);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (!IsOwner || isDead) return;
+
         if (other.CompareTag("Occluder"))
             RequestDeath();
     }
@@ -167,6 +189,7 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         isDead = true;
 
         inputServer = Vector2.zero;
+        rollServer = 0f;
 
         if (rb)
         {
@@ -174,6 +197,10 @@ public sealed class NetworkPlayerController : NetworkBehaviour
             rb.isKinematic = true;
         }
 
+        // animacja śmierci dla wszystkich (NetworkAnimator + trigger)
+        if (animator) animator.SetTrigger(deathTrig);
+
+        // kamera + UI tylko lokalnie dla ownera
         var targets = new ClientRpcParams
         {
             Send = new ClientRpcSendParams
@@ -195,30 +222,33 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         if (CameraMgr.Instance)
             CameraMgr.Instance.SetEndCamera();
 
-        if (animator)
-            animator.Play(deathState, 0, 0f);
-
         if (GameManager.Instance)
             GameManager.Instance.LocalPlayerDied();
     }
 
+    // ✅ teraz serwer dostaje input + roll
     [ServerRpc]
-    void SubmitInputServerRpc(Vector2 input)
+    void SubmitInputServerRpc(Vector2 input, float roll)
     {
         if (isDead) return;
+
         inputServer = input;
+        rollServer = Mathf.Clamp(roll, -rollAmount, rollAmount);
     }
 
     [ServerRpc]
     void JumpServerRpc()
     {
         if (isDead) return;
-        if (animator) animator.Play(jumpState, 0, 0f);
+
+        if (animator) animator.SetTrigger(jumpTrig);
     }
 
     public void ServerTeleportTo(Vector3 pos, Quaternion rot)
     {
         if (!IsServer) return;
+
+        rollServer = 0f;
 
         if (rb)
         {
@@ -236,5 +266,10 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         if (current < target) return Mathf.Min(current + maxDelta, target);
         if (current > target) return Mathf.Max(current - maxDelta, target);
         return current;
+    }
+
+    public void SoundEffect()
+    {
+        AudioManager.Instance.PlayHitEffect("Splat", 1f);
     }
 }

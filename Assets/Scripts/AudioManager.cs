@@ -1,6 +1,7 @@
 using UnityEngine;
 using Project.Core;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
@@ -11,25 +12,24 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     [SerializeField] private float fadeDuration = 1f;
     [SerializeField] private float targetMusicVolume = 0.7f;
 
-    private AudioClip[] backgroundPlaylist;
-    private int currentTrackIndex = 0;
-
-    private Coroutine musicRoutine;
+    private List<AudioClip> shuffledPlaylist;
+    private int currentIndex = 0;
 
     private void Start()
     {
-        LoadBackgroundPlaylist();
-        
         backgroundAudio.loop = false;
-
-        if (backgroundPlaylist != null && backgroundPlaylist.Length > 0)
-            musicRoutine = StartCoroutine(BackgroundMusicLoop());
+        LoadAndShufflePlaylist();
+        StartCoroutine(BackgroundMusicLoop());
     }
-
+    
     // BACKGROUND MUSIC
-    private void LoadBackgroundPlaylist()
+    private void LoadAndShufflePlaylist()
     {
-        backgroundPlaylist = Resources.LoadAll<AudioClip>("Audio/Background");
+        AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio/Background");
+
+        shuffledPlaylist = new List<AudioClip>(clips);
+        Shuffle(shuffledPlaylist);
+        currentIndex = 0;
     }
 
     private IEnumerator BackgroundMusicLoop()
@@ -38,60 +38,62 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
 
         while (true)
         {
-            backgroundAudio.clip = backgroundPlaylist[currentTrackIndex];
+            if (currentIndex >= shuffledPlaylist.Count)
+            {
+                Shuffle(shuffledPlaylist);
+                currentIndex = 0;
+            }
+
+            AudioClip clip = shuffledPlaylist[currentIndex];
+            currentIndex++;
+
+            backgroundAudio.clip = clip;
             backgroundAudio.Play();
             
-            yield return FadeVolume(backgroundAudio, 0f, targetMusicVolume, fadeDuration);
+            yield return FadeVolume(0f, targetMusicVolume, fadeDuration);
             
-            float timeToWait = Mathf.Max(0f, backgroundAudio.clip.length - fadeDuration);
-            yield return new WaitForSeconds(timeToWait);
+            yield return new WaitForSeconds(
+                Mathf.Max(0f, clip.length - fadeDuration)
+            );
             
-            yield return FadeVolume(backgroundAudio, targetMusicVolume, 0f, fadeDuration);
+            yield return FadeVolume(targetMusicVolume, 0f, fadeDuration);
 
             backgroundAudio.Stop();
-            
-            currentTrackIndex++;
-            if (currentTrackIndex >= backgroundPlaylist.Length)
-                currentTrackIndex = 0;
         }
     }
 
-    private IEnumerator FadeVolume(AudioSource source, float from, float to, float duration)
+    private IEnumerator FadeVolume(float from, float to, float duration)
     {
         float t = 0f;
-        source.volume = from;
-
-        if (duration <= 0f)
-        {
-            source.volume = to;
-            yield break;
-        }
+        backgroundAudio.volume = from;
 
         while (t < duration)
         {
             t += Time.deltaTime;
-            float k = Mathf.Clamp01(t / duration);
-            source.volume = Mathf.Lerp(from, to, k);
+            backgroundAudio.volume = Mathf.Lerp(from, to, t / duration);
             yield return null;
         }
 
-        source.volume = to;
+        backgroundAudio.volume = to;
     }
 
+    private void Shuffle(List<AudioClip> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
+    }
+    
     // HIT EFFECT
-    public void PlayHitEffect(string clipName)
+    public void PlayHitEffect(string clipName, float volume)
     {
         AudioClip clip = Resources.Load<AudioClip>("Audio/HitEffects/" + clipName);
+        if (clip == null) return;
 
-        if (clip == null)
-        {
-            Debug.LogWarning($"HitEffect audio clip not found: {clipName}");
-            return;
-        }
-
-        float randomPitch = Random.Range(0.9f, 1.1f);
-        hitEffectAudio.pitch = randomPitch;
-
-        hitEffectAudio.PlayOneShot(clip);
+        hitEffectAudio.pitch = Random.Range(0.9f, 1.1f);
+        hitEffectAudio.PlayOneShot(clip, Mathf.Clamp01(volume));
     }
+
 }

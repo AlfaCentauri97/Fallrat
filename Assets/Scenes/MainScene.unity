@@ -1458,8 +1458,7 @@ GameObject:
   - component: {fileID: 1184615280}
   - component: {fileID: 1184615281}
   - component: {fileID: 1184615282}
-  - component: {fileID: 1184615283}
-  - component: {fileID: 1184615284}
+  - component: {fileID: 1184615285}
   m_Layer: 0
   m_Name: GMgr
   m_TagString: Untagged
@@ -1604,7 +1603,7 @@ MonoBehaviour:
   hitEffectAudio: {fileID: 1579655204}
   fadeDuration: 1
   targetMusicVolume: 0.7
---- !u!114 &1184615283
+--- !u!114 &1184615285
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1616,7 +1615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1599636613
+  GlobalObjectIdHash: 1672295744
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -1629,22 +1628,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &1184615284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184615275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2031ba786c9439c469a3cb7c2e9dc30a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  playerPrefab: {fileID: 6864486573757474539, guid: 14157c1a7244fef43ba66125dc9dcd11, type: 3}
-  spawnPoints:
-  - {fileID: 2110533332}
 --- !u!1 &1187502923
 GameObject:
   m_ObjectHideFlags: 0
@@ -2515,7 +2498,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.15
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
