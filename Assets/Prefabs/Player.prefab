@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6145524788122732928}
   - component: {fileID: 8385315900456969174}
   - component: {fileID: 1126138214285019546}
+  - component: {fileID: 1917402800762673481}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -281,6 +282,21 @@ MonoBehaviour:
   visualRoot: {fileID: 5706730993393412577}
   enableOnlyInGameplay:
   - {fileID: 4146848993852858389}
+--- !u!114 &1917402800762673481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4935814621687427988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be4316555ef66e47aeb6d7e1c8f55d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  otherAlpha: 0.5
+  playerRenderer: {fileID: 878453735740075060}
 --- !u!1 &5706730993393412577
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,6 +586,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a486a3e0d3a5dc643a9a1ea9e111e22e, type: 3}
+--- !u!137 &878453735740075060 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -6448784093544285608, guid: a486a3e0d3a5dc643a9a1ea9e111e22e, type: 3}
+  m_PrefabInstance: {fileID: 3076437984128308844}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3259213536458568071 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a486a3e0d3a5dc643a9a1ea9e111e22e, type: 3}
