@@ -39,8 +39,8 @@ public sealed class NetworkPlayerController : NetworkBehaviour
     Vector2 inputOwner;
     Vector2 inputServer;
 
-    float currentRollOwner;  // tylko do “feel” na ownerze
-    float rollServer;        // autorytatywny roll na serwerze (replikowany przez NetworkTransform)
+    float currentRollOwner;
+    float rollServer;
 
     bool isDead;
     bool deathRequested;
@@ -96,15 +96,12 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         inputOwner = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         inputOwner = Vector2.ClampMagnitude(inputOwner, 1f);
 
-        // roll local (responsywność)
+        // roll local
         float targetRoll = -inputOwner.x * rollAmount;
         currentRollOwner = Mathf.Lerp(currentRollOwner, targetRoll, 1f - Mathf.Exp(-turnSmoothing * Time.deltaTime));
-
-        // opcjonalnie: owner może podglądać roll od razu
-        // (serwer i tak go zaraz nadpisze)
+        
         transform.localRotation = Quaternion.Euler(0f, 0f, currentRollOwner);
-
-        // wyślij input + roll do serwera
+        
         SubmitInputServerRpc(inputOwner, currentRollOwner);
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -125,8 +122,7 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         curMaxSpeedY = Mathf.Lerp(maxSpeedY, maxSpeedYMax, k);
         curAccelX = Mathf.Lerp(accelX, accelXMax, k);
         curAccelY = Mathf.Lerp(accelY, accelYMax, k);
-
-        // ruch (server authoritative)
+        
         Vector3 v3 = rb.linearVelocity;
 
         float targetVX = inputServer.x * curMaxSpeedX;
@@ -136,8 +132,7 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         v3.y = MoveTowards(v3.y, targetVY, curAccelY * Time.fixedDeltaTime);
 
         rb.linearVelocity = v3;
-
-        // bounds
+        
         Vector3 p3 = rb.position;
         Vector2 p = new Vector2(p3.x, p3.y);
         Vector2 offset = p - center;
@@ -164,8 +159,7 @@ public sealed class NetworkPlayerController : NetworkBehaviour
 
             rb.linearVelocity = new Vector3(velXY.x, velXY.y, vel.z);
         }
-
-        // ✅ rotacja ustawiana na serwerze (NetworkTransform ją zreplikuje)
+        
         transform.localRotation = Quaternion.Euler(0f, 0f, rollServer);
     }
 
@@ -198,11 +192,9 @@ public sealed class NetworkPlayerController : NetworkBehaviour
             rb.linearVelocity = Vector3.zero;
             rb.isKinematic = true;
         }
-
-        // animacja śmierci dla wszystkich (NetworkAnimator + trigger)
+        
         if (animator) animator.SetTrigger(deathTrig);
-
-        // kamera + UI tylko lokalnie dla ownera
+        
         var targets = new ClientRpcParams
         {
             Send = new ClientRpcSendParams
@@ -227,8 +219,7 @@ public sealed class NetworkPlayerController : NetworkBehaviour
         if (GameManager.Instance)
             GameManager.Instance.LocalPlayerDied();
     }
-
-    // ✅ teraz serwer dostaje input + roll
+    
     [ServerRpc]
     void SubmitInputServerRpc(Vector2 input, float roll)
     {

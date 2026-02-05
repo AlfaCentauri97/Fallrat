@@ -13,9 +13,6 @@ public sealed class GameManager : SingletonMonoBehaviour<GameManager>
     public Transform endGamePoint;
     public void ServerMoveToEndPoint(NetworkPlayerController player)
     {
-        if (!NetworkManager.Singleton || !NetworkManager.Singleton.IsServer) return;
-        if (!endGamePoint || !player) return;
-
         player.ServerTeleportTo(endGamePoint.position, endGamePoint.rotation);
     }
 
