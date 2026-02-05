@@ -2,6 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Project.Pooling;
 
+/// <summary>
+/// Gate entity that manages a list of trap GameObjects and ensures only one trap is active at a time.
+/// Resets its state when spawned/despawned via <see cref="IPoolable"/>.
+/// </summary>
+    
 public sealed class Gate : MonoBehaviour, IPoolable
 {
     [SerializeField] List<GameObject> traps = new();

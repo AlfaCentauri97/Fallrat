@@ -2,7 +2,9 @@ using UnityEngine;
 using Project.Core;
 using System.Collections;
 using System.Collections.Generic;
-
+/// <summary>
+/// Singleton audio manager that plays shuffled background music with fade in/out and triggers hit sound effects.
+/// </summary>
 public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
     public AudioSource backgroundAudio;

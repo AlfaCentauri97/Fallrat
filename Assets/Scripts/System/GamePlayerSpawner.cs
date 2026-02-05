@@ -1,6 +1,8 @@
 using Unity.Netcode;
 using UnityEngine;
-
+/// <summary>
+/// Server-side NGO spawner that creates a player NetworkObject for each connected client.
+/// </summary>
 public sealed class GamePlayerSpawner : NetworkBehaviour
 {
     [SerializeField] NetworkObject playerPrefab;

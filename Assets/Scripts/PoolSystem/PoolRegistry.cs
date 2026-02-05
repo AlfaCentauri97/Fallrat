@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// ScriptableObject registry that maps PoolKeys to prefabs and pool settings.
+/// </summary>
 namespace Project.Pooling
 {
     [CreateAssetMenu(menuName = "Project/Pooling/Pool Registry")]

@@ -1,8 +1,8 @@
-namespace Project.Pooling
+/// <summary>
+/// Pool callbacks for spawn/despawn.
+/// </summary>
+public interface IPoolable
 {
-    public interface IPoolable
-    {
-        void OnSpawned();
-        void OnDespawned();
-    }
+    void OnSpawned();
+    void OnDespawned();
 }

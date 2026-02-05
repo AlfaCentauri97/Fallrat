@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Project.Core;
-
+/// <summary>
+/// Singleton camera manager that switches between the gameplay and end Cinemachine cameras.
+/// </summary>
 public sealed class GameManager : SingletonMonoBehaviour<GameManager>
 {
     [SerializeField] float endGameUIDelay = 2f;

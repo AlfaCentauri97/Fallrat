@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Project.Core;
-
+/// <summary>
+/// Singleton manager that initializes pools from a PoolRegistry and provides static Spawn/Despawn access by PoolKey.
+/// </summary>
 namespace Project.Pooling
 {
     public sealed class PoolManager : SingletonMonoBehaviour<PoolManager>

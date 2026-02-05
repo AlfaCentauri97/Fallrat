@@ -16,6 +16,10 @@ using Unity.Services.Relay.Models;
 using UnityEngine.UI;
 using DG.Tweening;
 
+/// <summary>
+/// Quick Play networking bootstrap: UGS Lobbies + Relay + NGO (host or client), with lobby polling and scene transition.
+/// </summary>
+    
 public sealed class NetworkBootstrap : MonoBehaviour
 {
     public static NetworkBootstrap Instance { get; private set; }

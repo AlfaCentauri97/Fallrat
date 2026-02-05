@@ -1,6 +1,8 @@
 using Unity.Netcode;
 using UnityEngine;
-
+/// <summary>
+/// Server-authoritative NGO player controller: owner sends input/roll, server applies movement with ramping stats, bounds, rotation, jump/death, and local death camera/UI via RPC.
+/// </summary>
 public sealed class NetworkPlayerController : NetworkBehaviour
 {
     [Header("Move Base")]

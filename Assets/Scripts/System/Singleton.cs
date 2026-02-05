@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// Simple generic MonoBehaviour singleton base class.
+/// </summary>
 namespace Project.Core
 {
     public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour

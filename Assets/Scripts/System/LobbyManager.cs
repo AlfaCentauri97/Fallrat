@@ -1,5 +1,7 @@
 using UnityEngine;
-
+/// <summary>
+/// Simple lobby UI controller that toggles menu/lobby panels and triggers Quick Play start/cancel.
+/// </summary>
 public sealed class LobbyManager : MonoBehaviour
 {
     [SerializeField] RectTransform lobbyUI;

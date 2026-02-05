@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using Project.Pooling;
-
+/// <summary>
+/// NGO gate spawner/mover that periodically spawns pooled gates on the server (via ClientRpc), ramps difficulty over time, and despawns gates past a Z limit.
+/// </summary>
 public sealed class GateManager : NetworkBehaviour
 {
     [SerializeField] PoolKey gateKey;

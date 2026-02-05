@@ -1,6 +1,10 @@
-    using UnityEngine;
+using UnityEngine;
 using DG.Tweening;
 
+/// <summary>
+/// Scrolls the material _BaseMap UV offset on X using DOTween.
+/// </summary>
+    
 public sealed class MaterialAnimationTweenURP : MonoBehaviour
 {
     [SerializeField] private Material material;

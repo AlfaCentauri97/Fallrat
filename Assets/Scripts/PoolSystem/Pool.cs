@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Simple object pool for a prefab with optional prewarm, max size, and IPoolable spawn/despawn callbacks.
+/// </summary>
+
 namespace Project.Pooling
 {
     public sealed class Pool

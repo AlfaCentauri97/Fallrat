@@ -2,7 +2,9 @@ using Project.Core;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
-
+/// <summary>
+/// Singleton UI manager that tracks score, updates the score text, plays a punch tween, and toggles end-game UI.
+/// </summary>
 public sealed class UIManager : SingletonMonoBehaviour<UIManager>
 {
     [Header("Score")]

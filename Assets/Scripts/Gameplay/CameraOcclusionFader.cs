@@ -1,6 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Sphere-casts in front of the camera and fades any occluding obstacles.
+/// </summary>
+    
 public sealed class CameraOcclusionFader : MonoBehaviour
 {
     [SerializeField] float distance = 15f;

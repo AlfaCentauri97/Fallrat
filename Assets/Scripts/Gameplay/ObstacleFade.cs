@@ -1,6 +1,10 @@
 using UnityEngine;
 using Project.Pooling;
 
+/// <summary>
+/// Fades obstacle renderers in/out when occluded (MaterialPropertyBlock, pooling-safe).
+/// </summary>
+    
 public sealed class ObstacleFade : MonoBehaviour, IPoolable
 {
     [SerializeField] float minAlpha = 0.15f;
