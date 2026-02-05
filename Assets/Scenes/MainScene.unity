@@ -1454,11 +1454,11 @@ GameObject:
   - component: {fileID: 1184615276}
   - component: {fileID: 1184615278}
   - component: {fileID: 1184615277}
+  - component: {fileID: 1184615285}
   - component: {fileID: 1184615279}
   - component: {fileID: 1184615280}
   - component: {fileID: 1184615281}
   - component: {fileID: 1184615282}
-  - component: {fileID: 1184615285}
   m_Layer: 0
   m_Name: GMgr
   m_TagString: Untagged
@@ -1523,13 +1523,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102a13739c51e6040ab9d4276f6b4ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   gateKey: {fileID: 11400000, guid: aa6047f3a15d78d458aa025c9d0ea78a, type: 2}
   spawnPoint: {fileID: 1977120708}
   spawnInterval: 2
-  speed: 25
+  speed: 30
   despawnZ: -40
   intervalMin: 1
-  speedMax: 34
+  speedMax: 38
   rampDuration: 90
   ramp:
     serializedVersion: 2
