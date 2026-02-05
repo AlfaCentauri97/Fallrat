@@ -295,8 +295,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  otherAlpha: 0.15
   playerRenderer: {fileID: 878453735740075060}
+  localPlayerMaterial: {fileID: 2100000, guid: 6f642ebe47c395c4c863c3d252205970, type: 2}
+  otherPlayerMaterial: {fileID: 2100000, guid: f429000c1d3683c4eb7bfb35371568f2, type: 2}
 --- !u!1 &5706730993393412577
 GameObject:
   m_ObjectHideFlags: 0
